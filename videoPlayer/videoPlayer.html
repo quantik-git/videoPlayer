@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player</title>
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@1.5.2/dist/tailwind.min.css">
+</head>
+<body>
+    <style>
+        .controls-toggler > #controls {
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .controls-toggler:hover > #controls {
+            opacity: 1;
+        }
+
+        #sound-panel > #sound-range-wrapper {
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        #sound-panel:hover > #sound-range-wrapper {
+            opacity: 1;
+        }
+
+        input[type=range][orient=vertical] {
+            writing-mode: bt-lr; /* IE */
+            -webkit-appearance: slider-vertical; /* WebKit */
+        }
+        #sound-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+                    appearance: none;
+            width: 25px;
+            height: 12px;
+            border: none;
+            border-radius: 0.375rem;
+            background: #e53e3e;
+            cursor: pointer;
+        }
+        #sound-range::-moz-range-thumb {
+            width: 25px;
+            height: 12px;
+            border: none;
+            border-radius: 0.375rem;
+            background: #e53e3e;
+            cursor: pointer;
+        }
+    </style>
+    <main class="w-screen flex justify-center">
+        <section id="player" class="relative flex justify-center max-w-screen-md">
+            <video id="video" src="./The Human Eye Closeup - Macro slow-motion.mp4"></video>
+            <div id="controls" class="absolute left-0 bottom-0 w-full bg-gray-900 bg-opacity-50 
+                    text-sm font-mono text-gray-200 flex justify-around">
+                <button id="play-pause" onclick="togglePlayPause();"
+                        class="bg-gray-700 py-2 px-3 font-bold uppercase">
+                    play
+                </button>
+
+                <button id="reset" onclick="resetPlayer();"
+                        class="bg-gray-700 py-2 px-3 font-bold uppercase">
+                    reset
+                </button>
+                
+                <div class="flex flex-col flex-1 justify-center mx-2">
+                    <span id="progress-bar" class="w-full h-4 bg-gray-200 rounded-md relative" onclick="skipTo(event);">
+                        <span id="progress" class="h-full w-0 bg-red-600 rounded-md absolute"></span>
+                    </span>
+                </div>
+                
+                <div id="sound-panel" class="relative">
+                    <button id="sound" onclick="toggleSound();"
+                            class="bg-gray-700 py-2 px-3 font-bold uppercase">
+                        mute
+                    </button>
+                    <div id="sound-range-wrapper" class="absolute bg-gray-700 px-4 py-2" style="bottom: 100%">
+                        <input id="sound-range" class="bg-gray-200 h-24 w-2"
+                                type="range" orient="vertical" min="0" max="100" value="50" onchange="changeVolume(this.value);"/>
+                    </div>
+                </div>
+                
+
+                <button id="fullscreen" onclick="handleFullscreen();"
+                        class="bg-gray-700 py-2 px-3 font-bold uppercase">
+                    fullscreen
+                </button>
+            </div>
+        </section>
+
+        
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() { initializeMediaPlayer(); }, false);
+
+        var mediaPlayer;
+        var progressBar;
+        var playPause;
+        var progress;
+        var player;
+
+        function initializeMediaPlayer() {
+            player = document.getElementById('player');
+            mediaPlayer = document.getElementById('video');
+            progress = document.getElementById('progress');
+            playPause = document.getElementById('play-pause');
+            progressBar = document.getElementById('progress-bar');
+            mediaPlayer.controls = false;
+            mediaPlayer.loop = false;
+            mediaPlayer.addEventListener('timeupdate', updateProgressBar, false);
+            mediaPlayer.addEventListener('ended', pause, false);
+        }
+
+        function handleFullscreen() {
+            if (isFullScreen()) {
+                if (document.exitFullscreen) document.exitFullscreen();
+                else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+                else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen();
+                else if (document.msExitFullscreen) document.msExitFullscreen();
+            } else {
+                if (player.requestFullscreen) player.requestFullscreen();
+                else if (player.mozRequestFullScreen) player.mozRequestFullScreen();
+                else if (player.webkitRequestFullScreen) player.webkitRequestFullScreen();
+                else if (player.msRequestFullscreen) player.msRequestFullscreen();
+            }
+        }
+
+        function isFullScreen() {
+            return !!(document.fullscreen || document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement || document.fullscreenElement);
+        }
+
+        function skipTo(event) {
+            var time = Math.floor(event.offsetX * mediaPlayer.duration / progressBar.offsetWidth);
+            mediaPlayer.currentTime = time;
+        }
+
+        function updateProgressBar() {
+            var percentage = Math.floor((100 / mediaPlayer.duration) * mediaPlayer.currentTime);
+            progress.style.width = percentage + '%';
+        }
+
+        function changeVolume(value) {
+            console.log(value);
+            mediaPlayer.volume = value / 100;
+        }
+
+        function toggleSound() {
+            var btn = document.getElementById('sound');
+            if (mediaPlayer.muted) {
+                btn.innerHTML = 'mute';
+                mediaPlayer.muted = false;
+            } else {
+                btn.innerHTML = 'unmute';
+                mediaPlayer.muted = true;
+            }
+        }
+
+        function resetPlayer() {
+            progress.style.width = 0;
+            mediaPlayer.currentTime = 0;
+        }
+
+        function pause() {
+            playPause.innerHTML = 'play';
+            playPause.classList.add('play');
+            player.classList.toggle('controls-toggler');
+            mediaPlayer.pause();
+        }
+
+        function play() {
+            playPause.innerHTML = 'pause';
+            playPause.classList.add('pause');
+            player.classList.toggle('controls-toggler');
+            mediaPlayer.play();
+        }
+
+        function togglePlayPause() {
+            if (mediaPlayer.paused || mediaPlayer.ended) {
+                play();
+            } else {
+                pause();
+            }
+        }
+
+    </script>
+</body>
+</html>
