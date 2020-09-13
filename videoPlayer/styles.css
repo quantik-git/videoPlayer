@@ -1,0 +1,30 @@
+.hover-toggler > .target {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.hover-toggler:hover > .target {
+    opacity: 1;
+}
+
+input[type=range][orient=vertical] {
+    writing-mode: bt-lr; /* IE */
+    -webkit-appearance: slider-vertical; /* WebKit */
+}
+#sound-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+            appearance: none;
+    width: 25px;
+    height: 12px;
+    border: none;
+    border-radius: 0.375rem;
+    background: #e53e3e;
+    cursor: pointer;
+}
+#sound-range::-moz-range-thumb {
+    width: 25px;
+    height: 12px;
+    border: none;
+    border-radius: 0.375rem;
+    background: #e53e3e;
+    cursor: pointer;
+}

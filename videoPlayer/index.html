@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player</title>
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@1.8.7/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="w-screen min-h-screen flex flex-wrap justify-center items-center">
+        <section class="grid grid-cols-12 gap-1 md:gap-4 max-w-screen-sm md:max-w-screen-lg bg-gray-200 shadow-lg rounded-md p-3">
+            <figure id="player" class="relative col-start-1 col-span-12 md:col-span-9 flex justify-center">
+                <video id="video" src="./media/new-zealand-lake-south-island-queenstown.mp4"></video>
+    
+                <figcaption id="controls" class="absolute left-0 bottom-0 w-full bg-blue-900 bg-opacity-50 
+                        text-sm font-mono text-gray-200 flex justify-around target">
+                    <button id="play-pause" onclick="togglePlayPause();"
+                            class="bg-gray-700 py-2 px-3 fal text-xl fa-play">
+                    </button>
+    
+                    <button id="reset" onclick="resetPlayer();"
+                            class="bg-gray-700 py-2 px-3 fal text-xl fa-redo">
+                    </button>
+                    
+                    <div class="flex flex-col flex-1 justify-center mx-2">
+                        <span id="progress-bar" class="w-full h-4 bg-gray-200 rounded-md relative" onclick="skipTo(event);">
+                            <span id="progress" class="h-full w-0 bg-red-600 rounded-md absolute"></span>
+                        </span>
+                    </div>
+    
+                    <div class="bg-gray-700 text-xs py-2 px-3">
+                        DM-Player
+                    </div>
+                    
+                    <div id="sound-panel" class="relative hover-toggler">
+                        <button id="sound" onclick="toggleSound(this);"
+                                class="bg-gray-700 py-2 px-3 fal text-xl fa-volume">
+                        </button>
+                        <div id="sound-range-wrapper" class="absolute bg-gray-700 px-4 py-2 target" style="bottom: 100%">
+                            <input id="sound-range" class="bg-gray-200 h-24 w-2"
+                                    type="range" orient="vertical" min="0" max="100" value="50" onchange="changeVolume(this.value);"/>
+                        </div>
+                    </div>
+    
+                    <button id="fullscreen" onclick="handleFullscreen(this);"
+                            class="bg-gray-700 py-2 px-3 fal text-xl fa-expand-arrows">
+                    </button>
+                </figcaption>
+            </figure>
+    
+            <aside id="media-play-list" class="col-start-1 col-span-12 md:col-start-10 md:col-span-3 flex flex-col">
+                <h2 class="text-xl text-gray-700 font-bold leading-loose">Play list</h2>
+                <ul class="overflow-y-auto h-32 sm:h-48 md:h-64 text-blue-700">
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/theHumanEyeCloseup.mp4');">Eye</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/new-zealand-lake-south-island-queenstown.mp4');">NZ queensland</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/theHumanEyeCloseup.mp4');">Eye</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/new-zealand-lake-south-island-queenstown.mp4');">NZ queensland</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/theHumanEyeCloseup.mp4');">Eye</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/new-zealand-lake-south-island-queenstown.mp4');">NZ queensland</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/theHumanEyeCloseup.mp4');">Eye</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/new-zealand-lake-south-island-queenstown.mp4');">NZ queensland</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/theHumanEyeCloseup.mp4');">Eye</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/new-zealand-lake-south-island-queenstown.mp4');">NZ queensland</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/theHumanEyeCloseup.mp4');">Eye</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/new-zealand-lake-south-island-queenstown.mp4');">NZ queensland</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/new-zealand-lake-south-island-queenstown.mp4');">NZ queensland</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/theHumanEyeCloseup.mp4');">Eye</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/new-zealand-lake-south-island-queenstown.mp4');">NZ queensland</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/theHumanEyeCloseup.mp4');">Eye</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/new-zealand-lake-south-island-queenstown.mp4');">NZ queensland</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/theHumanEyeCloseup.mp4');">Eye</button>
+                    </li>
+                    <li class="rounded hover:bg-blue-200 m-1">
+                        <button class="underline px-2 py-1" 
+                            onclick="loadVideo('media/new-zealand-lake-south-island-queenstown.mp4');">NZ queensland</button>
+                    </li>
+                </ul>
+            </aside>
+        </section>
+        
+    </main>
+    <script src="player.js"></script>
+</body>
+</html>
